@@ -245,4 +245,14 @@ app.listen(3000, () => {
     console.log('🌍 Web Dashboard running on http://localhost:3000');
 });
 
-client.login(process.env.DISCORD_TOKEN);
+console.log('Attempting to login to Discord...');
+if (!process.env.DISCORD_TOKEN) {
+    console.error('CRITICAL WARNING: DISCORD_TOKEN is absolutely missing or blank!');
+}
+
+client.login(process.env.DISCORD_TOKEN)
+    .then(() => console.log('✅ Discord Gateway WebSocket connected successfully.'))
+    .catch(err => {
+        console.error('❌ CRITICAL ERROR LOGGING INTO DISCORD:');
+        console.error(err);
+    });
