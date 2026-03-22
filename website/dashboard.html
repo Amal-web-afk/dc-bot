@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyari Bot | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="dashboard-body">
+    <div class="blob config-1"></div>
+    <div class="blob config-2"></div>
+    
+    <nav class="navbar glass">
+        <div class="nav-content">
+            <h1 class="logo">PYARI <span>DASHBOARD</span></h1>
+            <div class="nav-links">
+                <a href="index.html" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-container fade-in">
+        <header class="dash-hero">
+            <h2>Bot Configuration</h2>
+            <p>Customize your server's welcome and leave modules intuitively.</p>
+        </header>
+
+        <div class="glass dash-main-card">
+            <div class="server-selector-wrapper">
+                <label>Select Your Server</label>
+                <select id="serverSelect" class="input-field input-large">
+                    <option value="">Loading your servers...</option>
+                </select>
+                <p id="serverSelectStatus" class="status-msg" style="margin-top: 5px; font-weight: normal;"></p>
+            </div>
+
+            <div id="configForm" class="hidden fade-in">
+                <div class="settings-grid">
+                    <!-- Welcome Card -->
+                    <div class="settings-card glass">
+                        <div class="card-header">
+                            <span class="icon">👋</span>
+                            <h3>Welcome Module</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Designated Channel</label>
+                            <select id="welcomeChannel" class="input-field"><option value="">Select Channel</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Custom Message <span>(Use {user} and {server})</span></label>
+                            <textarea id="welcomeMsg" class="input-field" placeholder="Welcome to {server}, {user}!"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Background Image URL <span>(Link ending in .png/.jpg)</span></label>
+                            <input id="welcomeBg" type="text" class="input-field" placeholder="https://...">
+                        </div>
+                        <button id="testWelcomeBtn" class="btn btn-test">🧪 Test Welcome Banner</button>
+                    </div>
+
+                    <!-- Leave Card -->
+                    <div class="settings-card glass">
+                        <div class="card-header">
+                            <span class="icon">🚶</span>
+                            <h3>Leave Module</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Designated Channel</label>
+                            <select id="leaveChannel" class="input-field"><option value="">Select Channel</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Custom Message <span>(Use {user})</span></label>
+                            <textarea id="leaveMsg" class="input-field" placeholder="Goodbye {user}, we will miss you!"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Background Image URL <span>(Link ending in .png/.jpg)</span></label>
+                            <input id="leaveBg" type="text" class="input-field" placeholder="https://...">
+                        </div>
+                        <button id="testLeaveBtn" class="btn btn-test">🧪 Test Leave Banner</button>
+                    </div>
+
+                    <!-- Autorole Card -->
+                    <div class="settings-card glass" style="grid-column: 1 / -1; border-color: rgba(74, 222, 128, 0.4);">
+                        <div class="card-header">
+                            <span class="icon">✨</span>
+                            <h3>Autorole Settings</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Role assigned automatically on join</label>
+                            <select id="autoroleId" class="input-field"><option value="">Select Role</option></select>
+                        </div>
+                    </div>
+
+                    <!-- Leveling System Card -->
+                    <div class="settings-card glass" style="grid-column: 1 / -1; border-color: rgba(94, 234, 212, 0.4);">
+                        <div class="card-header">
+                            <span class="icon">⭐</span>
+                            <h3>Leveling & Rewards</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Level Up Announcement Channel</label>
+                            <select id="levelUpChannelId" class="input-field"><option value="">Current Channel (Where message was sent)</option></select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Restricted Bot Commands Channel</label>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem;">Force regular users to use /rank and /leaderboard only inside this specific channel.</p>
+                            <select id="botCommandsChannelId" class="input-field"><option value="">Allow Anywhere</option></select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Admin XP Logs Channel</label>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem;">Privately log every XP gain to this channel so admins can monitor activity.</p>
+                            <select id="xpLogsChannelId" class="input-field"><option value="">Disabled</option></select>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem;">
+                            <label style="color: var(--text-primary); font-weight: 600; font-size: 1.1rem;">Level Role Rewards</label>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Assign specific roles automatically when members hit certain levels.</p>
+                            
+                            <div id="levelRolesContainer" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                                <!-- JS will inject rows here -->
+                            </div>
+                            <button id="addLevelRoleBtn" class="btn" style="background: rgba(255,255,255,0.05); margin-top: 1rem; width: 100%;">➕ Add Level Reward</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="save-actions">
+                    <button id="saveConfigBtn" class="btn btn-glow btn-massive">💾 Save Changes</button>
+                    <p id="saveStatus" class="status-msg"></p>
+                </div>
+
+                <!-- Self Role Setup Card -->
+                <div class="settings-card glass" style="margin-top: 4rem;">
+                    <div class="card-header">
+                        <span class="icon">🎭</span>
+                        <h3>Deploy Self-Role Panel</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Target Channel</label>
+                        <select id="srChannel" class="input-field"><option value="">Select Channel</option></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Panel Message Text</label>
+                        <textarea id="srMessage" class="input-field" placeholder="Click the buttons below to grab your roles!"></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <div class="form-group"><label>Role 1</label><select id="srRole1" class="input-field"><option value="">None</option></select></div>
+                        <div class="form-group"><label>Emoji 1 <span>(Unicode or <:name:id>)</span></label><input id="srEmoji1" type="text" class="input-field" placeholder="🍎"></div>
+                        <div class="form-group"><label>Role 2</label><select id="srRole2" class="input-field"><option value="">None</option></select></div>
+                        <div class="form-group"><label>Emoji 2</label><input id="srEmoji2" type="text" class="input-field" placeholder="🌟"></div>
+                        <div class="form-group"><label>Role 3</label><select id="srRole3" class="input-field"><option value="">None</option></select></div>
+                        <div class="form-group"><label>Emoji 3</label><input id="srEmoji3" type="text" class="input-field" placeholder="🚀"></div>
+                        <div class="form-group"><label>Role 4</label><select id="srRole4" class="input-field"><option value="">None</option></select></div>
+                        <div class="form-group"><label>Emoji 4</label><input id="srEmoji4" type="text" class="input-field" placeholder="🔥"></div>
+                        <div class="form-group"><label>Role 5</label><select id="srRole5" class="input-field"><option value="">None</option></select></div>
+                        <div class="form-group"><label>Emoji 5</label><input id="srEmoji5" type="text" class="input-field" placeholder="💧"></div>
+                    </div>
+
+                    <button id="srDeployBtn" class="btn btn-glow" style="width: 100%; margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem;">🚀 Deploy Panel to Server</button>
+                    <p id="srDeployStatus" class="status-msg"></p>
+                </div>
+
+                <div class="commands-section" style="margin-top: 4rem;">
+                    <div class="card-header">
+                        <span class="icon">🤖</span>
+                        <h3>Available Bot Commands</h3>
+                    </div>
+                    <div id="commandsGrid" class="commands-grid">
+                        <p>Loading commands...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="./js/dashboard.js"></script>
+</body>
+</html>

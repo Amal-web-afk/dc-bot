@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables (NEVER COMMIT THIS)
+.env
+.env.local
+
+# Databases
+botData.db
+*.sqlite
+*.sqlite3
+
+# OS Files
+.DS_Store
+Thumbs.db
